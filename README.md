@@ -16,10 +16,8 @@ npx skills add https://github.com/impakers/dev-skills --skill impakers-component
 
 ```bash
 npx skills add https://github.com/impakers/dev-skills \
-  --skill impakers-components-rules
-# 추가 스킬이 생기면:
-#   --skill impakers-dev-standards \
-#   --skill impakers-agentation
+  --skill impakers-components-rules \
+  --skill impakers-dev-standards
 ```
 
 **기타 명령**:
@@ -52,12 +50,12 @@ npx -y github:impakers/dev-skills add components-rules --project
 
 ## 포함된 스킬
 
-| 이름 | 설명 |
-|---|---|
-| [`impakers-components-rules`](skills/impakers-components-rules/) | 임패커스 UI 컴포넌트 개발 규칙 (shadcn/ui + Tailwind). .tsx 편집 시 자동 주입. |
+| 이름 | 설명 | 트리거 |
+|---|---|---|
+| [`impakers-components-rules`](skills/impakers-components-rules/) | 임패커스 UI 컴포넌트 개발 규칙 (shadcn/ui + Tailwind) | `.tsx` 편집, "모달", "Dialog", "폼" |
+| [`impakers-dev-standards`](skills/impakers-dev-standards/) | 개발표준정의서 `DEV_STANDARDS.md` 제너레이터 (12장 인터뷰형) | "개발표준정의서 만들어줘", "표준 문서화" |
 
 추가 예정:
-- `impakers-dev-standards` (개발표준정의서 제너레이터)
 - `impakers-agentation` (Agentation 피드백 도구)
 
 ## 구조
