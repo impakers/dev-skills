@@ -23,6 +23,10 @@
 ## 설치
 
 ```bash
+# 권장: Vercel의 표준 skills CLI
+npx skills add https://github.com/impakers/dev-skills --skill impakers-components-rules
+
+# 대체: 자체 CLI
 npx -y github:impakers/dev-skills add components-rules
 ```
 

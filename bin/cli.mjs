@@ -108,7 +108,9 @@ function installSkill(skillName) {
   log('다음 단계:');
   log('  1. Claude Code 를 재시작하세요 (스킬 목록 재스캔).');
   log('  2. 관련 파일 편집 시 자동 주입 여부 확인.');
-  log(`  3. 업데이트: npx -y github:impakers/dev-skills add ${skillName} --force`);
+  log(`  3. 업데이트: npx skills update  (또는 --force 옵션으로 재실행)`);
+  log('');
+  log(`💡 Tip: 더 범용적인 설치는 "npx skills add https://github.com/impakers/dev-skills --skill ${skillName}"`);
 }
 
 function uninstallSkill(skillName) {
