@@ -54,6 +54,7 @@ npx -y github:impakers/dev-skills add components-rules --project
 |---|---|---|
 | [`impakers-components-rules`](skills/impakers-components-rules/) | 임패커스 UI 컴포넌트 개발 규칙 (shadcn/ui + Tailwind) | `.tsx` 편집, "모달", "Dialog", "폼" |
 | [`impakers-dev-standards`](skills/impakers-dev-standards/) | 개발표준정의서 `DEV_STANDARDS.md` 제너레이터 (12장 인터뷰형) | "개발표준정의서 만들어줘", "표준 문서화" |
+| [`impakers-bz-logic-spec`](skills/impakers-bz-logic-spec/) | 클라이언트 요구사항과 원본 자료를 Harness 친화적인 프로젝트 스펙/docs 구조로 정리 | "프로젝트 스펙 정리", "docs 셋업", "raw-specs 정리" |
 
 추가 예정:
 - `impakers-agentation` (Agentation 피드백 도구)
@@ -65,9 +66,17 @@ dev-skills/
 ├── package.json              npx 진입점 (자체 CLI)
 ├── bin/cli.mjs               add/remove/list, Node stdlib only, 의존성 0
 ├── skills/
-│   └── impakers-components-rules/
-│       ├── SKILL.md           Claude가 로드
-│       └── README.md
+│   ├── impakers-components-rules/
+│   │   ├── SKILL.md           Claude가 로드
+│   │   └── README.md
+│   ├── impakers-dev-standards/
+│   │   ├── SKILL.md
+│   │   └── README.md
+│   └── impakers-bz-logic-spec/
+│       ├── SKILL.md
+│       ├── README.md
+│       ├── scripts/create_standard_docs.py
+│       └── templates/standard-docs/
 ├── scripts/
 │   └── sync-from-workflow.sh  workflow repo로부터 최신 SKILL.md 당겨오기
 └── README.md
@@ -96,6 +105,18 @@ dev-skills/
 3. `~/.claude/skills/impakers-components-rules/` 로 SKILL.md + 부속 파일 설치
 4. Claude Code 세션 시작 시 스킬 자동 로드
 5. `.tsx` 편집 시 description 매칭으로 자동 주입
+
+
+### impakers-bz-logic-spec 스캐폴드 생성
+
+```bash
+python3 ~/.claude/skills/impakers-bz-logic-spec/scripts/create_standard_docs.py \
+  --target /path/to/project \
+  --project-name "프로젝트명" \
+  --client-name "클라이언트명"
+```
+
+`docs/raw-specs/` 원본 파일명은 `yy-mm-dd-[purpose]-raw-file.{ext}` 규칙을 사용합니다.
 
 ## 관리자: 새 스킬 추가
 
