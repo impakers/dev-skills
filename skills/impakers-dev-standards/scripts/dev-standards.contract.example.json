@@ -1,0 +1,125 @@
+{
+  "slots": [
+    {
+      "slot": "dev.boundary_map",
+      "confidence": "high",
+      "value": "The default profile is Next.js + TypeScript + FSD + typia. Chapter 6 must include a client/server/shared/FSD boundary table unless a non-default stack override is explicitly documented with evidence.",
+      "evidence": ["docs/design-docs/dev-standards-validation.md:12-23"]
+    },
+    {
+      "slot": "dev.fsd_enforcement",
+      "confidence": "high",
+      "value": "Default FSD compliance requires exact layer responsibilities for app route entry, widgets/*/ui, features/*/ui, entities/*/ui, shared/ui, and components/ui, plus allowed imports, forbidden imports, public API, 600+ LOC and 1,000+ LOC split thresholds, repeated UI extraction, and exception handling rules. A non-FSD override must name the replacement layering model and evidence.",
+      "evidence": ["docs/design-docs/dev-standards-validation.md:16-24"]
+    },
+    {
+      "slot": "dev.runtime_validation",
+      "confidence": "high",
+      "value": "Under the default Next.js + TypeScript + FSD + typia profile, TypeScript interface/type is the source of truth for runtime schema. Every external unknown input boundary, including server action, API route handler, file upload parser, IPC, and external authentication callback, must pass a mandatory typia runtime schema validator before business logic. Create/update DTOs must use a strict typia validator that rejects excess properties, and validation failures must map to explicit error status responses. A non-TypeScript override must name the replacement runtime validation profile and evidence.",
+      "evidence": ["docs/design-docs/dev-standards-validation.md:15-30"]
+    },
+    {
+      "slot": "dev.source_of_truth",
+      "confidence": "high",
+      "value": "Source-of-truth tables must distinguish authoritative state from temporary cache or browser storage.",
+      "evidence": ["docs/design-docs/dev-standards-validation.md:15-23"]
+    },
+    {
+      "slot": "dev.client_server_boundary",
+      "confidence": "high",
+      "value": "Browser-only helpers and server-safe contracts must be separated.",
+      "evidence": ["docs/design-docs/dev-standards-validation.md:15-23"]
+    },
+    {
+      "slot": "quality.coverage_status",
+      "confidence": "high",
+      "value": "Coverage status must be reported as measured, proxy, or unavailable.",
+      "evidence": ["docs/design-docs/dev-standards-validation.md:16-23"]
+    },
+    {
+      "slot": "quality.metrics_methodology",
+      "confidence": "high",
+      "value": "LoC, SLoC, token proxy, and search cost metrics require formula, scope, and source.",
+      "evidence": ["docs/design-docs/dev-standards-validation.md:17-23"]
+    },
+    {
+      "slot": "quality.validation_log",
+      "confidence": "high",
+      "value": "Validation command, result, warning, manual QA, and unverified-risk records are required.",
+      "evidence": ["docs/design-docs/dev-standards-validation.md:19-23"]
+    },
+    {
+      "slot": "quality.fsd_compliance_gate",
+      "confidence": "high",
+      "value": "FSD compliance must name npm run validate:fsd-structure and the automated lint/validator gate or record manual QA and unverified risk for app route entry, widgets/*/ui, features/*/ui, entities/*/ui, shared/ui, components/ui, public API, and dependency direction rules.",
+      "evidence": ["docs/design-docs/dev-standards-validation.md:21-27"]
+    },
+    {
+      "slot": "artifacts.classification",
+      "confidence": "high",
+      "value": "Artifact kinds must distinguish draft, preview, confirmed, export, public fixture, and FileAsset.",
+      "evidence": ["docs/design-docs/dev-standards-validation.md:18-23"]
+    },
+    {
+      "slot": "docs.sync_policy",
+      "confidence": "high",
+      "value": "Code changes must list related docs that need synchronized updates.",
+      "evidence": ["docs/design-docs/dev-standards-validation.md:21-23"]
+    }
+  ],
+  "measurements": [
+    {
+      "name": "coverage",
+      "kind": "unavailable",
+      "source": "package.json scripts",
+      "risk": "No test or coverage command is configured, so exact coverage percentage must not be claimed."
+    },
+    {
+      "name": "token proxy",
+      "kind": "proxy",
+      "value": "SLoC x token heuristic",
+      "unit": "proxy tokens",
+      "formula": "estimated_tokens = source_lines * documented multiplier",
+      "scope": "changed source and standards files",
+      "source": "local file line counts"
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "DEV_STANDARDS draft",
+      "kind": "draft",
+      "sourceOfTruth": false,
+      "risk": "Draft content requires evidence review before being treated as authoritative."
+    },
+    {
+      "name": "FileAsset export",
+      "kind": "file_asset",
+      "sourceOfTruth": true,
+      "retention": "Follow docs/SECURITY.md file retention rules."
+    }
+  ],
+  "handoff": {
+    "file": "docs/DEV_STANDARDS.md",
+    "filledSlots": 11,
+    "totalSlots": 62,
+    "todoCount": 0,
+    "coverageStatus": {
+      "name": "coverage",
+      "kind": "unavailable",
+      "source": "package.json scripts",
+      "risk": "No test or coverage command is configured."
+    },
+    "measurements": [
+      {
+        "name": "token proxy",
+        "kind": "proxy",
+        "value": "SLoC x token heuristic",
+        "unit": "proxy tokens",
+        "formula": "estimated_tokens = source_lines * documented multiplier",
+        "scope": "changed source and standards files",
+        "source": "local file line counts"
+      }
+    ],
+    "risks": []
+  }
+}
