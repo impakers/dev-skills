@@ -1,0 +1,23 @@
+case_id: non-default-stack-override
+expected:
+  profile:
+    must_apply_default: false
+    must_include:
+      - "override"
+      - "근거"
+  slots:
+    dev.fsd_enforcement:
+      confidence: medium
+      must_include:
+        - "FSD 미채택"
+        - "대체 레이어링"
+      must_not_include:
+        - "기본 FSD 강제"
+    dev.runtime_validation:
+      confidence: medium
+      must_include:
+        - "replacement runtime validation profile"
+judge_focus:
+  - profile_correctness
+  - uncertainty_handling
+  - evidence_fidelity

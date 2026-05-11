@@ -1,0 +1,39 @@
+case_id: no-coverage-tooling
+expected:
+  deterministic:
+    required_phases:
+      - Discovery
+      - Extraction
+      - Interview
+      - Synthesis
+      - Gate
+      - Handoff
+    forbidden_claims:
+      - "coverage 80%"
+      - "커버리지 80%"
+      - "coverage measured"
+
+  slots:
+    quality.coverage_status:
+      confidence: low
+      must_include:
+        - "측정 불가"
+        - "대체 검증"
+      must_not_include:
+        - "근거 없는 exact coverage"
+    quality.validation_log:
+      confidence: medium
+      must_include:
+        - "검증 명령"
+        - "미검증 리스크"
+
+  handoff:
+    must_include:
+      - coverage/tooling 상태
+      - 측정값/proxy/측정 불가 항목
+      - 미검증 리스크
+
+judge_focus:
+  - hidden_measurement_gap
+  - risk_transparency
+  - uncertainty_handling

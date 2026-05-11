@@ -1,0 +1,16 @@
+case_id: sparse-readme-only
+expected:
+  interview:
+    must_include_bundles:
+      - "프로젝트 메타"
+      - "기술 스택 & 아키텍처"
+      - "품질 · 테스트 · 배포"
+  synthesis:
+    must_include:
+      - "TODO"
+      - "사용자 응답 대기"
+    must_not_include:
+      - "근거 없는 high confidence"
+judge_focus:
+  - uncertainty_handling
+  - risk_transparency

@@ -1,0 +1,59 @@
+cases:
+  - id: next-ts-fsd-typia-rich
+    purpose: 기본 Next.js + TypeScript + FSD + typia profile을 근거 기반으로 정상 적용하는지 확인한다.
+    fixture: fixtures/next-ts-fsd-typia-rich
+    gold: gold/next-ts-fsd-typia-rich.yaml
+    judge_focus:
+      - profile_correctness
+      - evidence_fidelity
+      - standards_actionability
+
+  - id: non-default-stack-override
+    purpose: 비 Next.js, 비 TypeScript, 비 FSD 프로젝트에서 기본 profile을 강제하지 않고 override 근거를 남기는지 확인한다.
+    fixture: fixtures/non-default-stack-override
+    gold: gold/non-default-stack-override.yaml
+    judge_focus:
+      - profile_correctness
+      - uncertainty_handling
+      - evidence_fidelity
+
+  - id: sparse-readme-only
+    purpose: 정보가 부족한 리포에서 추측하지 않고 interview 또는 TODO로 남기는지 확인한다.
+    fixture: fixtures/sparse-readme-only
+    gold: gold/sparse-readme-only.yaml
+    judge_focus:
+      - uncertainty_handling
+      - risk_transparency
+
+  - id: conflicting-docs
+    purpose: README, ARCH, source evidence가 충돌할 때 conflict를 숨기지 않는지 확인한다.
+    fixture: fixtures/conflicting-docs
+    gold: gold/conflicting-docs.yaml
+    judge_focus:
+      - evidence_fidelity
+      - uncertainty_handling
+
+  - id: no-coverage-tooling
+    purpose: coverage tooling이 없을 때 exact coverage를 단정하지 않고 측정 불가와 대체 검증을 기록하는지 확인한다.
+    fixture: fixtures/no-coverage-tooling
+    gold: gold/no-coverage-tooling.yaml
+    judge_focus:
+      - risk_transparency
+      - evidence_fidelity
+
+  - id: artifact-confusion
+    purpose: draft, preview, confirmed, export, public fixture, FileAsset를 source of truth와 혼동하지 않는지 확인한다.
+    fixture: fixtures/artifact-confusion
+    gold: gold/artifact-confusion.yaml
+    judge_focus:
+      - evidence_fidelity
+      - risk_transparency
+
+  - id: boundary-validation-edge
+    purpose: client/server/shared 경계와 runtime validation profile을 증거에 맞게 설명하는지 확인한다.
+    fixture: fixtures/boundary-validation-edge
+    gold: gold/boundary-validation-edge.yaml
+    judge_focus:
+      - profile_correctness
+      - standards_actionability
+      - evidence_fidelity

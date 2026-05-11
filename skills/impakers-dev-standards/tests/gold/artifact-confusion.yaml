@@ -1,0 +1,21 @@
+case_id: artifact-confusion
+expected:
+  slots:
+    artifacts.classification:
+      confidence: high
+      must_include:
+        - "draft"
+        - "preview"
+        - "confirmed"
+        - "export"
+        - "public fixture"
+        - "FileAsset"
+      must_not_include:
+        - "public fixture를 source of truth로 승격"
+  synthesis:
+    must_include:
+      - "source of truth"
+      - "미검증 리스크"
+judge_focus:
+  - evidence_fidelity
+  - risk_transparency
