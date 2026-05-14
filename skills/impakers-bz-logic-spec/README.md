@@ -94,11 +94,30 @@ docs/product-specs/index.md
 docs/product-specs/_feature-template.md
 docs/design-docs/index.md
 docs/design-docs/_adr-template.md
+docs/design-docs/_intent-mission-template.md
+docs/design-docs/_workflow-design-template.md
 docs/generated/.gitkeep
 docs/exec-plans/active/.gitkeep
 docs/exec-plans/completed/.gitkeep
 docs/test-plans/.gitkeep
+docs/test-plans/_qa-as-requirement-template.md
+docs/exec-plans/active/_vertical-slice-template.md
 ```
+
+## impakers-intent-planning 연계
+
+Maker의 최초 발화, 기능 요청, 문제 상황, UX 불편, 신규 서비스 아이디어가 들어왔고 아직 핵심 의도 / 미션 / 대표 유저 스토리가 정리되지 않았다면 먼저 `impakers-intent-planning`으로 front-door 기획 산출물을 만든 뒤 이 스킬로 정본화합니다.
+
+| Intent Planning Output | Target Docs |
+|---|---|
+| Raw Requirement | `docs/raw-specs/yy-mm-dd-[purpose]-raw-file.md` |
+| Requirement Atoms | `docs/raw-specs/` 또는 관련 `docs/product-specs/*.md` |
+| Core Intent / Mission / Soul Statement | `docs/PRODUCT_SENSE.md` 또는 `docs/design-docs/<feature>-intent.md` |
+| Selected User Story | `docs/product-specs/<feature>.md` |
+| Workflow / UI Flow | `docs/product-specs/<feature>.md` 또는 `docs/design-docs/<feature>-workflow.md` |
+| Data / State / Policy / API Draft | `docs/design-docs/<feature>-design.md` |
+| QA-as-Requirement | `docs/test-plans/<feature>-qa.md` |
+| Vertical Slice Candidates | `docs/exec-plans/active/<feature>-implementation-plan.md` |
 
 ## AGENTS.md / CLAUDE.md 필수 작업 원칙
 

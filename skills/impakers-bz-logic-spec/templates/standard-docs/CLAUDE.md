@@ -46,3 +46,18 @@
 ```bash
 # TODO
 ```
+
+## Impakers Planning Rule
+
+Maker의 요구사항을 바로 구현 목록으로 바꾸지 않는다.
+
+신규 기능 요청, UX 불편, 업무 흐름 개선 요청이 들어오면 먼저 다음을 확인한다.
+
+1. Raw Requirement가 보존되었는가?
+2. Core Intent가 선택되었는가?
+3. Mission / Soul Statement가 있는가?
+4. Selected User Story가 있는가?
+5. Workflow / UI Flow가 있는가?
+6. QA-as-Requirement가 정의되었는가?
+
+위 항목이 없으면 구현 전에 `impakers-intent-planning` 관점으로 기획 초안을 만든다.

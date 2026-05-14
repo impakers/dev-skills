@@ -61,6 +61,17 @@ TypeScript 프로젝트에서는 TypeScript `interface`/`type`을 runtime schema
 
 FSD 기본값에서는 `app route entry`, `widgets/*/ui`, `features/*/ui`, `entities/*/ui`, `shared/ui`, `components/ui` 책임·허용 의존성·금지 의존성·public API/export boundary·예외 승인 기준·검증 명령을 문서화한다. 비-FSD면 대체 레이어링(Clean Architecture, Hexagonal, MVC, layered backend, modular monolith, package-by-feature 등)과 compliance gate를 기록한다.
 
+## impakers-intent-planning 산출물 반영
+
+대상 repo에 `docs/PRODUCT_SENSE.md`, `docs/design-docs/*intent*.md`, `docs/design-docs/*workflow*.md`, `docs/product-specs/*.md`, `docs/test-plans/*qa*.md`가 존재하면, 다음 항목을 개발표준정의서의 증거로 사용할 수 있다.
+
+| Intent Planning Output | DEV_STANDARDS 반영 위치 |
+|---|---|
+| Mission / Soul Statement | 1장 개요, 7장 UI/UX 표준, 8장 품질 기준 |
+| Workflow / UI Flow | 2장 시스템 아키텍처, 7장 UI/UX 표준 |
+| Data / State / Policy Draft | 2장 아키텍처, 3장 비즈니스 불변 규칙, 6장 개발표준 |
+| QA-as-Requirement | 8장 품질 기준, 12장 장애 대응/모니터링 |
+
 ## 실행 절차
 
 1. **Discovery** — `docs/`, README, CLAUDE.md, AGENTS.md, PRD/SCOPE/ARCH/ADR/API, package/build/deploy/test 설정, 대표 소스 구조를 스캔한다. 제외: `node_modules`, `.next`, `dist`, `build`, `.git`, `.omc/logs`, `coverage`, 바이너리.

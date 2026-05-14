@@ -123,6 +123,17 @@ def render_templates(project_name: str, client_name: str, vendor_name: str) -> d
 | UI 구현 | Frontend agent | `docs/DESIGN.md`, `docs/FRONTEND.md`, 관련 spec |
 | QA | QA agent | `docs/test-plans/`, 수용 기준 |
 | 계획 변경 | Planning agent | `docs/PLANS.md`, `docs/exec-plans/` |
+
+## Agent Team Routing
+
+| 작업 유형 | 먼저 읽을 문서 | 사용할 스킬 / 관점 |
+|---|---|---|
+| Maker 최초 요청 / 문제 상황 분석 | `docs/raw-specs/`, 이슈 본문 | `impakers-intent-planning` |
+| 의도 / 미션 / 유저 스토리 정리 | `docs/PRODUCT_SENSE.md`, `docs/design-docs/*intent*.md` | `impakers-intent-planning` |
+| 클라이언트 원본 자료 정본화 | `docs/raw-specs/`, `docs/references/` | `impakers-bz-logic-spec` |
+| 기능별 product spec 작성 | `docs/product-specs/` | `impakers-bz-logic-spec` |
+| UI 컴포넌트 구현 | `docs/product-specs/*.md`, `docs/DESIGN.md`, 관련 `.tsx` | `impakers-components-rules` |
+| 개발표준정의서 생성 | 전체 `docs/`, `README.md`, `ARCHITECTURE.md` | `impakers-dev-standards` |
 """,
         "CLAUDE.md": f"""# CLAUDE.md
 
@@ -178,6 +189,21 @@ def render_templates(project_name: str, client_name: str, vendor_name: str) -> d
 ```bash
 # TODO: 프로젝트 실행/테스트 명령 작성
 ```
+
+## Impakers Planning Rule
+
+Maker의 요구사항을 바로 구현 목록으로 바꾸지 않는다.
+
+신규 기능 요청, UX 불편, 업무 흐름 개선 요청이 들어오면 먼저 다음을 확인한다.
+
+1. Raw Requirement가 보존되었는가?
+2. Core Intent가 선택되었는가?
+3. Mission / Soul Statement가 있는가?
+4. Selected User Story가 있는가?
+5. Workflow / UI Flow가 있는가?
+6. QA-as-Requirement가 정의되었는가?
+
+위 항목이 없으면 구현 전에 `impakers-intent-planning` 관점으로 기획 초안을 만든다.
 """,
         "ARCHITECTURE.md": f"""# Architecture - {project_name}
 
@@ -210,6 +236,30 @@ flowchart LR
 
 - 클라이언트: {client_name}
 - 작성일: {today}
+
+## Maker / Impakers / Agent Team
+
+- Maker:
+- Impakers:
+- Agent Team:
+
+## Core Intent
+
+> Maker가 진짜 얻고 싶은 변화는 무엇인가?
+
+## Mission Statement
+
+> 이 서비스 또는 기능은 무엇을 가능하게 하는가?
+
+## Soul Statement
+
+> 어떤 구현 방식이 되더라도 절대 잃으면 안 되는 본질은 무엇인가?
+
+## Intent Trace
+
+| Raw Requirement | Interpreted Intent | Related Story | Related Spec |
+|---|---|---|---|
+| TODO | TODO | TODO | TODO |
 
 ## Users
 
@@ -283,29 +333,56 @@ API/ERP 문서, 출력 템플릿, 샘플 데이터, 레거시 코드, 테스트 
 """,
         "docs/product-specs/_feature-template.md": """# Feature Spec: <기능명>
 
-## 개요
+## 0. Intent Trace
+
+- Raw Requirement:
+- Requirement Atoms:
+- Selected Core Intent:
+- Mission Statement:
+- Soul Statement:
+- Selected User Story:
+- Related Workflow:
+- Related QA-as-Requirement:
+
+## 1. 개요
 
 TODO: 이 기능이 해결하는 클라이언트 업무 문제와 사용자 가치를 적는다.
 
-## 사용자 플로우
+## 2. 사용자 플로우
 
 1. TODO
 
-## 데이터 모델
+## 3. UI Flow / Mock Data
+
+| Step | Screen/Surface | User Action | System Response | Mock Data |
+|---|---|---|---|---|
+| 1 | TODO | TODO | TODO | TODO |
+
+## 4. 데이터 모델 Draft
 
 | 엔티티/테이블 | 역할 | 주요 필드 |
 |---|---|---|
 | TODO | TODO | TODO |
 
-## 비즈니스 규칙
+## 5. 상태 모델 Draft
+
+| State | Meaning | Entry Condition | Exit Condition |
+|---|---|---|---|
+| TODO | TODO | TODO | TODO |
+
+## 6. 비즈니스 규칙 / 정책 / 권한 / 예외
 
 - TODO
 
-## 수용 기준
+## 7. API Contract Draft
+
+- TODO
+
+## 8. QA-as-Requirement
 
 - [ ] TODO
 
-## 출처 문서
+## 9. 출처 문서
 
 - `docs/raw-specs/yy-mm-dd-[purpose]-raw-file.{ext}` §TODO
 """,
@@ -314,6 +391,8 @@ TODO: 이 기능이 해결하는 클라이언트 업무 문제와 사용자 가�
 | Doc | Status | Description |
 |---|---|---|
 | [_adr-template.md](_adr-template.md) | Template | ADR 템플릿 |
+| [_intent-mission-template.md](_intent-mission-template.md) | Template | Core Intent, Mission, Soul Statement 정본화 템플릿 |
+| [_workflow-design-template.md](_workflow-design-template.md) | Template | Workflow, UI Flow, Mock Data, Intent Fit Check 템플릿 |
 
 ## When To Add
 
@@ -321,6 +400,7 @@ TODO: 이 기능이 해결하는 클라이언트 업무 문제와 사용자 가�
 - 되돌리기 어려운 아키텍처 결정
 - 여러 기능에 영향을 주는 비즈니스 규칙
 - 레거시 로직/출력 포맷/파이프라인 해석
+- Maker 발화에서 도출된 의도/미션/워크플로우 정본화
 """,
         "docs/design-docs/_adr-template.md": """# ADR-000: <결정명>
 
@@ -343,6 +423,140 @@ TODO: 결정한 내용을 적는다.
 ## Source Documents
 
 - `docs/raw-specs/yy-mm-dd-[purpose]-raw-file.{ext}` §TODO
+""",
+        "docs/design-docs/_intent-mission-template.md": """# Intent / Mission Spec: <기능명>
+
+## Raw Requirement
+
+- Source:
+- Original:
+
+## Requirement Atoms
+
+| Atom | Type | Source Signal | Notes |
+|---|---|---|---|
+| TODO | Problem / Need / Constraint / Policy / UX / Data / QA | TODO | TODO |
+
+## Core Intent
+
+> Maker가 진짜 얻고 싶은 변화는 무엇인가?
+
+## Mission Statement
+
+> 이 서비스 또는 기능은 무엇을 가능하게 하는가?
+
+## Soul Statement
+
+> 어떤 구현 방식이 되더라도 절대 잃으면 안 되는 본질은 무엇인가?
+
+## Intent Fit Check
+
+- [ ] 선택한 유저 스토리가 Core Intent를 직접 만족한다.
+- [ ] UX 흐름이 Soul Statement를 훼손하지 않는다.
+- [ ] QA-as-Requirement가 Mission Statement의 성공을 관찰할 수 있다.
+
+## Related Docs
+
+- `docs/product-specs/<feature>.md`
+- `docs/test-plans/<feature>-qa.md`
+""",
+        "docs/design-docs/_workflow-design-template.md": """# Workflow Design: <기능명>
+
+## Intent Trace
+
+- Raw Requirement:
+- Selected Core Intent:
+- Selected User Story:
+- Related Product Spec:
+
+## Workflow
+
+1. TODO
+
+## UI Flow
+
+| Step | Screen/Surface | User Action | System Response | State |
+|---|---|---|---|---|
+| 1 | TODO | TODO | TODO | TODO |
+
+## Mock Data
+
+| Field | Example | Purpose |
+|---|---|---|
+| TODO | TODO | TODO |
+
+## State / Policy Notes
+
+- TODO
+
+## Intent Fit Check
+
+- [ ] 화면 흐름이 사용자의 실제 업무 순서를 따른다.
+- [ ] Mock Data가 대표 사용자 스토리의 성공/실패 상태를 보여준다.
+- [ ] 예외와 빈 상태가 QA-as-Requirement와 연결된다.
+""",
+        "docs/test-plans/_qa-as-requirement-template.md": """# QA-as-Requirement: <기능명>
+
+## Intent Trace
+
+- Raw Requirement:
+- Selected Core Intent:
+- Related Product Spec:
+- Related Workflow:
+
+## QA 기준
+
+| Requirement | Success Observation | Test/QA Method | Evidence |
+|---|---|---|---|
+| TODO | TODO | Manual / E2E / Unit / Contract | TODO |
+
+## 실패/빈 상태
+
+- TODO
+
+## Acceptance Gate
+
+- [ ] Maker가 핵심 의도와 성공 관찰 기준을 확인함
+- [ ] Impakers가 product spec/design doc 라우팅을 확인함
+- [ ] Agent Team이 구현 가능성과 미결정 질문을 분리함
+""",
+        "docs/exec-plans/active/_vertical-slice-template.md": """# Vertical Slice Plan: <기능명>
+
+## Intent Trace
+
+- Raw Requirement:
+- Selected Core Intent:
+- Mission Statement:
+- Selected User Story:
+- Related QA:
+
+## Slice Goal
+
+TODO
+
+## Scope
+
+### In
+
+- TODO
+
+### Out
+
+- TODO
+
+## Work Items
+
+| Step | Task | Owner | Verification |
+|---|---|---|---|
+| 1 | TODO | TODO | TODO |
+
+## Acceptance
+
+- [ ] TODO
+
+## Open Questions
+
+- TODO
 """,
     }
 

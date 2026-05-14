@@ -66,3 +66,14 @@
 | 기능 구현 | Programming agent | `docs/product-specs/*.md`, 관련 `docs/design-docs/*.md` |
 | DB/API 변경 | Backend agent | `ARCHITECTURE.md`, `docs/generated/`, 관련 spec |
 | UI 구현 | Frontend agent | `docs/DESIGN.md`, `docs/FRONTEND.md`, 관련 spec |
+
+## Agent Team Routing
+
+| 작업 유형 | 먼저 읽을 문서 | 사용할 스킬 / 관점 |
+|---|---|---|
+| Maker 최초 요청 / 문제 상황 분석 | `docs/raw-specs/`, 이슈 본문 | `impakers-intent-planning` |
+| 의도 / 미션 / 유저 스토리 정리 | `docs/PRODUCT_SENSE.md`, `docs/design-docs/*intent*.md` | `impakers-intent-planning` |
+| 클라이언트 원본 자료 정본화 | `docs/raw-specs/`, `docs/references/` | `impakers-bz-logic-spec` |
+| 기능별 product spec 작성 | `docs/product-specs/` | `impakers-bz-logic-spec` |
+| UI 컴포넌트 구현 | `docs/product-specs/*.md`, `docs/DESIGN.md`, 관련 `.tsx` | `impakers-components-rules` |
+| 개발표준정의서 생성 | 전체 `docs/`, `README.md`, `ARCHITECTURE.md` | `impakers-dev-standards` |

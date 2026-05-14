@@ -14,6 +14,12 @@ license: internal
 
 ---
 
+## impakers-intent-planning 연계
+
+UI Flow 또는 Mock Data 기반 화면 구현을 요청받은 경우, 먼저 관련 `docs/product-specs/*.md`, `docs/design-docs/*workflow*.md`, `docs/DESIGN.md`를 확인한다.
+
+`impakers-intent-planning`에서 정의된 Selected User Story, Intent Fit Check, UI Flow, QA-as-Requirement가 존재하면, 컴포넌트 구조와 사용자 피드백 UX는 해당 의도를 훼손하지 않는 방향으로 구현한다.
+
 ## 사용 프로토콜 (Claude용)
 
 1. **TSX/JSX 파일 편집/생성 직전**: 아래 §0–§12의 관련 섹션을 먼저 확인.

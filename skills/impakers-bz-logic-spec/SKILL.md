@@ -83,6 +83,35 @@ AGENTS.md와 CLAUDE.md를 작성하거나 스캐폴드할 때는 아래 작업 �
 
 ## 클라이언트 요구 라우팅
 
+### impakers-intent-planning 연계 규칙
+
+Maker의 최초 발화, 기능 요청, 문제 상황, UX 불편, 신규 서비스 아이디어가 들어왔고 아직 핵심 의도 / 미션 / 대표 유저 스토리가 정리되지 않은 경우, 바로 product spec으로 정리하지 말고 먼저 `impakers-intent-planning`을 사용한다.
+
+`impakers-intent-planning`은 Maker 발화를 다음 산출물로 변환한다.
+
+- Raw Requirement
+- Requirement Atoms
+- Core Intent
+- Mission / Soul Statement
+- Story Candidates
+- Selected User Story
+- Workflow / UI Flow Draft
+- Development Design Draft
+- QA-as-Requirement
+
+이후 `impakers-bz-logic-spec`는 위 산출물을 표준 docs 구조에 정본화한다.
+
+| Intent Planning Output | Target Docs |
+|---|---|
+| Raw Requirement | `docs/raw-specs/yy-mm-dd-[purpose]-raw-file.md` |
+| Requirement Atoms | `docs/raw-specs/` 또는 관련 `docs/product-specs/*.md` |
+| Core Intent / Mission / Soul Statement | `docs/PRODUCT_SENSE.md` 또는 `docs/design-docs/<feature>-intent.md` |
+| Selected User Story | `docs/product-specs/<feature>.md` |
+| Workflow / UI Flow | `docs/product-specs/<feature>.md` 또는 `docs/design-docs/<feature>-workflow.md` |
+| Data / State / Policy / API Draft | `docs/design-docs/<feature>-design.md` |
+| QA-as-Requirement | `docs/test-plans/<feature>-qa.md` |
+| Vertical Slice Candidates | `docs/exec-plans/active/<feature>-implementation-plan.md` |
+
 | 클라이언트 요구 또는 자료 | 먼저 보관할 위치 | 정규화할 위치 | 작성 기준 |
 |---|---|---|---|
 | 킥오프 회의록, 미팅 메모, 구두 요구 정리 | `docs/raw-specs/` | 관련 `docs/product-specs/*.md`, `docs/PRODUCT_SENSE.md` | 누가, 어떤 업무에서, 왜 필요한지 분리 |
@@ -91,7 +120,7 @@ AGENTS.md와 CLAUDE.md를 작성하거나 스캐폴드할 때는 아래 작업 �
 | API 문서, ERP 문서, 외부 서비스 가이드 | `docs/references/` | `ARCHITECTURE.md`, `docs/design-docs/`, 필요 시 `docs/product-specs/` | 인증, 엔드포인트, 요청/응답, 실패 모드 명시 |
 | 출력 양식, PDF/Excel 템플릿, 리포트 샘플 | `docs/references/` | `docs/design-docs/output-format-spec.md`, 관련 기능 스펙 | 컬럼, 포맷, 정렬, 집계 규칙을 source of truth로 기록 |
 | 레거시 Python/Apps Script/VBA/기존 자동화 | `docs/references/legacy-*` | `docs/design-docs/business-logic.md`, pipeline 문서 | 함수/단계/예외/검증 로직을 새 스택 기준으로 번역 |
-| 새로운 기능 요청 | 원문은 `docs/raw-specs/` 또는 이슈 링크 | `docs/product-specs/<feature>.md` | 개요, 사용자 플로우, 데이터 모델, 수용 기준 포함 |
+| 새로운 기능 요청 / Maker 발화 | 원문은 `docs/raw-specs/` 또는 이슈 링크 | 먼저 `impakers-intent-planning`으로 Core Intent / Mission / Selected User Story를 도출한 뒤 `docs/product-specs/*.md`로 정본화 | 요구사항을 바로 구현 목록으로 바꾸지 말고 의도와 QA 기준을 추적 |
 | 비즈니스 규칙 변경 | 회의록은 `docs/raw-specs/` | `docs/design-docs/`, 관련 product spec | source of truth와 영향 범위 기록 |
 | 일정, 마일스톤, 우선순위 조정 | `docs/raw-specs/` 또는 `docs/PLANS.md` | `docs/PLANS.md`, `docs/exec-plans/active/` | 누가 언제 무엇을 완료하는지 명시 |
 | DB/ERD/API 계약 변경 | 원본은 `docs/raw-specs/` 또는 migration | `docs/generated/`, `ARCHITECTURE.md`, 관련 spec | 생성 산출물과 수작업 설명을 분리 |
@@ -139,32 +168,56 @@ AGENTS.md와 CLAUDE.md를 작성하거나 스캐폴드할 때는 아래 작업 �
 ```markdown
 # Feature Spec: <기능명>
 
-## 개요
+## 0. Intent Trace
+
+- Raw Requirement:
+- Requirement Atoms:
+- Selected Core Intent:
+- Mission Statement:
+- Soul Statement:
+- Selected User Story:
+- Related Workflow:
+- Related QA-as-Requirement:
+
+## 1. 개요
 이 기능이 해결하는 클라이언트 업무 문제와 사용자 가치를 적는다.
 
-## 사용자 플로우
+## 2. 사용자 플로우
 1. 사용자가 어디에서 시작하는지
 2. 어떤 입력/선택을 하는지
 3. 시스템이 어떤 처리를 하는지
 4. 결과가 어디에 저장되거나 표시되는지
 
-## 데이터 모델
+## 3. UI Flow / Mock Data
+| Step | Screen/Surface | User Action | System Response | Mock Data |
+|---|---|---|---|---|
+| 1 |  |  |  |  |
+
+## 4. 데이터 모델 Draft
 | 엔티티/테이블 | 역할 | 주요 필드 |
 |---|---|---|
 |  |  |  |
 
-## 비즈니스 규칙
+## 5. 상태 모델 Draft
+| State | Meaning | Entry Condition | Exit Condition |
+|---|---|---|---|
+|  |  |  |  |
+
+## 6. 비즈니스 규칙 / 정책 / 권한 / 예외
 - 반드시 지켜야 하는 규칙
 - 조건부 필수값, enum, 검증, 예외 처리
 - 다른 기능이나 외부 시스템과의 충돌 규칙
 
-## 수용 기준
+## 7. API Contract Draft
+- TODO
+
+## 8. QA-as-Requirement
 - [ ] 사용자가 핵심 플로우를 완료할 수 있음
 - [ ] 필수 검증이 실패 시 제출이 차단됨
 - [ ] 데이터 저장/출력 결과가 출처 문서와 일치함
 - [ ] 빈 상태/오류 상태가 정의됨
 
-## 출처 문서
+## 9. 출처 문서
 - `docs/raw-specs/yy-mm-dd-[purpose]-raw-file.{ext}` §<섹션>
 - `docs/references/<참조파일>`
 ```
