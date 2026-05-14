@@ -1,0 +1,16 @@
+case_id: conflicting-docs
+expected:
+  extraction:
+    must_mark_conflicts: true
+    must_include:
+      - "conflict"
+      - "evidence"
+  synthesis:
+    must_include:
+      - "미검증 리스크"
+      - "TODO"
+    must_not_include:
+      - "충돌 무시"
+judge_focus:
+  - evidence_fidelity
+  - uncertainty_handling

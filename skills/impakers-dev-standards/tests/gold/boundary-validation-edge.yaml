@@ -1,0 +1,23 @@
+case_id: boundary-validation-edge
+expected:
+  slots:
+    dev.boundary_map:
+      confidence: high
+      must_include:
+        - "client-only"
+        - "server-only"
+        - "shared"
+    dev.runtime_validation:
+      confidence: high
+      must_include:
+        - "external input"
+        - "runtime validation"
+        - "error status mapping"
+    dev.source_of_truth:
+      confidence: high
+      must_not_include:
+        - "browser cache as source of truth"
+judge_focus:
+  - profile_correctness
+  - standards_actionability
+  - evidence_fidelity

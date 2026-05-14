@@ -1,0 +1,44 @@
+{
+  "run_id": "sample-no-coverage-tooling",
+  "fixture": "no-coverage-tooling",
+  "skill_version": "0.4.0",
+  "verdict": "pass",
+  "score": 1,
+  "threshold": 0.82,
+  "blocking_failures": [],
+  "phase_results": {
+    "discovery": {
+      "verdict": "pass",
+      "score": 1
+    },
+    "extraction": {
+      "verdict": "pass",
+      "score": 1
+    },
+    "interview": {
+      "verdict": "pass",
+      "score": 1
+    },
+    "synthesis": {
+      "verdict": "pass",
+      "score": 1
+    },
+    "gate": {
+      "verdict": "pass",
+      "score": 1
+    },
+    "handoff": {
+      "verdict": "pass",
+      "score": 1
+    }
+  },
+  "rubric_scores": {
+    "evidence_fidelity": 1,
+    "uncertainty_handling": 1,
+    "profile_correctness": 1,
+    "standards_actionability": 1,
+    "risk_transparency": 1
+  },
+  "issues": [],
+  "reasoning_summary": "Sample report used to validate the internal accuracy report contract."
+}

@@ -1,0 +1,295 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://johab-on.local/schemas/dev-standards.schema.json",
+  "title": "DEV_STANDARDS extraction contract",
+  "description": "Structured data contract for impakers-dev-standards slot extraction, measurement reporting, artifact classification, and handoff summaries.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/extractionResult"
+    },
+    {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/slotRecord"
+      }
+    }
+  ],
+  "$defs": {
+    "slotId": {
+      "type": "string",
+      "enum": [
+        "project.name_ko",
+        "project.name_en",
+        "project.client",
+        "project.vendor",
+        "project.last_modified",
+        "tech.frontend",
+        "tech.backend",
+        "tech.db",
+        "tech.auth",
+        "tech.infra",
+        "architecture.overview_mermaid",
+        "architecture.modules",
+        "architecture.integrations",
+        "rbac.roles",
+        "invariants",
+        "data.classification",
+        "data.compliance",
+        "naming.common",
+        "naming.backend",
+        "naming.frontend",
+        "naming.db",
+        "naming.api",
+        "naming.domain_terms",
+        "dev.layering_rules",
+        "dev.boundary_map",
+        "dev.fsd_enforcement",
+        "dev.dto_pattern",
+        "dev.validation",
+        "dev.runtime_validation",
+        "dev.source_of_truth",
+        "dev.client_server_boundary",
+        "dev.exceptions",
+        "dev.transaction",
+        "dev.logging",
+        "dev.testing",
+        "dev.comments",
+        "ui.principles",
+        "ui.color_tokens",
+        "ui.components",
+        "ui.layouts",
+        "ui.responsive",
+        "quality.data_kpi",
+        "quality.code_kpi",
+        "quality.coverage_status",
+        "quality.metrics_methodology",
+        "quality.validation_log",
+        "quality.gates",
+        "quality.fsd_compliance_gate",
+        "artifacts.classification",
+        "docs.sync_policy",
+        "deploy.infra_components",
+        "deploy.pipeline_stages",
+        "deploy.environments",
+        "deploy.container_policy",
+        "deploy.strategy",
+        "directory.monorepo_tree",
+        "directory.backend_tree",
+        "directory.frontend_tree",
+        "git.branch_strategy",
+        "git.commit_convention",
+        "git.mr_rules",
+        "ops.availability",
+        "ops.monitoring",
+        "ops.incidents",
+        "ops.backup",
+        "ops.mock_fallback"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "missing"]
+    },
+    "evidence": {
+      "type": "string",
+      "pattern": "^.+:(L)?[0-9]+(-[0-9]+)?$"
+    },
+    "slotRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slot", "confidence", "value", "evidence"],
+      "properties": {
+        "slot": {
+          "$ref": "#/$defs/slotId"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "value": {
+          "type": ["string", "number", "boolean", "array", "object", "null"]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          }
+        },
+        "todo": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "confidence": {
+                "const": "missing"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "measurementKind": {
+      "type": "string",
+      "enum": ["measured", "proxy", "unavailable"]
+    },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "kind", "source"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "$ref": "#/$defs/measurementKind"
+        },
+        "value": {
+          "type": ["string", "number", "null"]
+        },
+        "unit": {
+          "type": "string"
+        },
+        "formula": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": ["measured", "proxy"]
+              }
+            }
+          },
+          "then": {
+            "required": ["formula", "scope"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "unavailable"
+              }
+            }
+          },
+          "then": {
+            "required": ["risk"]
+          }
+        }
+      ]
+    },
+    "artifactKind": {
+      "type": "string",
+      "enum": ["draft", "preview", "confirmed", "export", "public_fixture", "file_asset"]
+    },
+    "artifactClassification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "kind", "sourceOfTruth"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "$ref": "#/$defs/artifactKind"
+        },
+        "sourceOfTruth": {
+          "type": "boolean"
+        },
+        "retention": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string"
+        }
+      }
+    },
+    "handoffSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "filledSlots", "totalSlots", "todoCount", "coverageStatus", "risks"],
+      "properties": {
+        "file": {
+          "const": "docs/DEV_STANDARDS.md"
+        },
+        "filledSlots": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "totalSlots": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "todoCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "coverageStatus": {
+          "$ref": "#/$defs/measurement"
+        },
+        "measurements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/measurement"
+          }
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "extractionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slots"],
+      "properties": {
+        "slots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/slotRecord"
+          }
+        },
+        "measurements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/measurement"
+          }
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifactClassification"
+          }
+        },
+        "handoff": {
+          "$ref": "#/$defs/handoffSummary"
+        }
+      }
+    }
+  }
+}

@@ -30,9 +30,9 @@ npx skills remove impakers-components-rules          # 제거
 npx skills find <keyword>                            # 검색
 ```
 
-### 대체: 자체 CLI 사용 (의존성 0, Node stdlib만)
+### 대체: 자체 CLI 사용 (런타임 의존성 0, Node stdlib만)
 
-`skills` 패키지 설치를 원치 않을 때:
+`skills` 패키지 설치를 원치 않을 때. 배포 CLI 자체는 Node stdlib만 사용하며, repo 개발/검증용 lint·typecheck devDependencies는 별도로 둡니다.
 
 ```bash
 npx -y github:impakers/dev-skills add components-rules
@@ -56,7 +56,7 @@ npx -y github:impakers/dev-skills add bz-logic-spec --project
 | 이름 | 쓰임새 | 주요 산출물/규칙 | 대표 트리거 |
 |---|---|---|---|
 | [`impakers-components-rules`](skills/impakers-components-rules/) | 임패커스 프론트엔드 UI 컴포넌트 개발 규칙 | shadcn/ui + Tailwind 기반 Dialog, Sheet, Form, Table, Toast, Query invalidate/revalidate, 접근성/반응형 규칙 | `.tsx`/`.jsx` 편집, "모달", "Dialog", "폼", "toast", "임패커스 UI 규칙" |
-| [`impakers-dev-standards`](skills/impakers-dev-standards/) | 프로젝트 문서를 스캔해 개발표준정의서를 만드는 인터뷰형 제너레이터 | `docs/DEV_STANDARDS.md` 12장 Markdown, 슬롯별 증거 인용, 누락 슬롯 TODO/질문 번들 | "개발표준정의서 만들어줘", "DEV_STANDARDS.md 작성", "표준 문서화" |
+| [`impakers-dev-standards`](skills/impakers-dev-standards/) | 프로젝트 문서와 대표 소스 구조를 스캔해 개발표준정의서를 만드는 인터뷰형 제너레이터 | `docs/DEV_STANDARDS.md` 12장 Markdown, Next.js+TypeScript+FSD+typia 기본 profile, 리소스 기반 슬롯/질문/게이트 | "개발표준정의서 만들어줘", "DEV_STANDARDS.md 작성", "표준 문서화" |
 | [`impakers-bz-logic-spec`](skills/impakers-bz-logic-spec/) | 클라이언트 요구사항과 원본 자료를 비즈니스 로직 중심의 표준 docs 구조로 정리 | `AGENTS.md`, `CLAUDE.md`, `ARCHITECTURE.md`, `docs/raw-specs/`, `docs/product-specs/`, `docs/design-docs/`, `docs/exec-plans/` 스캐폴드와 문서 라우팅 규칙 | "프로젝트 스펙 정리", "docs 셋업", "raw-specs 정리", "PRD 정리", "회의록/엑셀 스펙 정리", "레거시 코드 분석" |
 
 ## 어떤 스킬을 설치할까
@@ -79,14 +79,27 @@ npx -y github:impakers/dev-skills add bz-logic-spec --project
 ```
 dev-skills/
 ├── package.json              npx 진입점 (자체 CLI)
-├── bin/cli.mjs               add/remove/list, Node stdlib only, 의존성 0
+├── bin/cli.mjs               add/remove/list, Node stdlib only at runtime
+├── eslint.config.mjs         repo lint gate
+├── tsconfig.json             repo typecheck gate
 ├── skills/
 │   ├── impakers-components-rules/
 │   │   ├── SKILL.md           에이전트가 로드
 │   │   └── README.md
 │   ├── impakers-dev-standards/
 │   │   ├── SKILL.md
-│   │   └── README.md
+│   │   ├── README.md
+│   │   ├── scripts/
+│   │   │   ├── dev-standards.contract.example.json
+│   │   │   ├── dev-standards.schema.json
+│   │   │   ├── validate-dev-standards.mjs
+│   │   │   ├── validate-fsd-structure.mjs
+│   │   │   └── validate-typia-runtime-policy.mjs
+│   │   └── resources/
+│   │       ├── gate-checklist.md
+│   │       ├── interview-bundles.md
+│   │       ├── slot-catalog.md
+│   │       └── synthesis-template.md
 │   └── impakers-bz-logic-spec/
 │       ├── SKILL.md
 │       ├── README.md
@@ -98,6 +111,18 @@ dev-skills/
 ```
 
 `skills/` 하위 디렉토리는 [vercel-labs/skills 규약](https://github.com/vercel-labs/skills) 의 표준 경로이므로, `npx skills add` CLI가 자동으로 스캔합니다.
+
+## 검증 명령
+
+```bash
+npm run lint                         # ESLint flat config 기반 repo lint
+npm run typecheck                    # TypeScript project gate
+npm run validate                     # impakers-dev-standards skill/schema/fixture 검증
+npm run validate:dev-standards       # DEV_STANDARDS.md 없으면 경고만 출력
+npm run validate:dev-standards:strict # 실제 docs/DEV_STANDARDS.md까지 엄격 검증
+```
+
+`impakers-dev-standards` 스킬에는 대상 프로젝트가 가져다 쓸 수 있는 검증 스크립트도 포함됩니다. 특히 `validate-dev-standards.mjs`는 `--skill <SKILL.md>` 옵션으로 설치된 스킬 본문과 `resources/`까지 함께 읽어 v0.4 슬롯·FSD·typia marker를 검증합니다.
 
 ## 스킬 트리거 예시
 
@@ -117,7 +142,7 @@ dev-skills/
 
 ### impakers-dev-standards
 
-아래 상황에서 대상 repo의 문서를 스캔하고 `docs/DEV_STANDARDS.md` 초안 생성을 돕습니다.
+아래 상황에서 대상 repo의 문서와 대표 소스 구조를 스캔하고 `docs/DEV_STANDARDS.md` 초안 생성을 돕습니다. 기본 profile은 Next.js + TypeScript + FSD + typia runtime schema이며, 비해당 프로젝트는 증거 기반 override를 남깁니다.
 
 **자연어 프롬프트**
 - "**개발표준정의서** 만들어줘"

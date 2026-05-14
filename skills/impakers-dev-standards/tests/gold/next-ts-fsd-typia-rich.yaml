@@ -1,0 +1,27 @@
+case_id: next-ts-fsd-typia-rich
+expected:
+  profile:
+    must_apply_default: true
+    must_include:
+      - "Next.js"
+      - "TypeScript"
+      - "FSD"
+      - "typia"
+  slots:
+    dev.fsd_enforcement:
+      confidence: high
+      must_include:
+        - "app route entry"
+        - "widgets/*/ui"
+        - "features/*/ui"
+        - "public API"
+    dev.runtime_validation:
+      confidence: high
+      must_include:
+        - "unknown"
+        - "typia runtime schema"
+        - "strict"
+judge_focus:
+  - profile_correctness
+  - evidence_fidelity
+  - standards_actionability

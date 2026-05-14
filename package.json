@@ -6,6 +6,15 @@
   "bin": {
     "dev-skills": "./bin/cli.mjs"
   },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "validate": "npm run validate:dev-standards:skill",
+    "validate:dev-standards:internal-accuracy": "node skills/impakers-dev-standards/scripts/validate-internal-accuracy.mjs",
+    "validate:dev-standards:skill": "node skills/impakers-dev-standards/scripts/validate-dev-standards.mjs --no-target --skill skills/impakers-dev-standards/SKILL.md --slot-data skills/impakers-dev-standards/scripts/dev-standards.contract.example.json",
+    "validate:dev-standards": "node skills/impakers-dev-standards/scripts/validate-dev-standards.mjs --allow-missing --slot-data skills/impakers-dev-standards/scripts/dev-standards.contract.example.json",
+    "validate:dev-standards:strict": "node skills/impakers-dev-standards/scripts/validate-dev-standards.mjs --slot-data skills/impakers-dev-standards/scripts/dev-standards.contract.example.json"
+  },
   "files": [
     "bin/",
     "skills/",
@@ -28,5 +37,11 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^20.19.25",
+    "eslint": "^9.39.1",
+    "typescript": "^5.9.3"
   }
 }

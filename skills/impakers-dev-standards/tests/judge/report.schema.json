@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "impakers-dev-standards internal accuracy report",
+  "type": "object",
+  "required": [
+    "run_id",
+    "fixture",
+    "skill_version",
+    "verdict",
+    "score",
+    "threshold",
+    "blocking_failures",
+    "phase_results",
+    "rubric_scores",
+    "issues"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "run_id": { "type": "string", "minLength": 1 },
+    "fixture": { "type": "string", "minLength": 1 },
+    "skill_version": { "type": "string", "minLength": 1 },
+    "verdict": { "enum": ["pass", "warn", "fail"] },
+    "score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "threshold": { "type": "number", "minimum": 0, "maximum": 1 },
+    "blocking_failures": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "phase_results": {
+      "type": "object",
+      "required": ["discovery", "extraction", "interview", "synthesis", "gate", "handoff"],
+      "additionalProperties": false,
+      "properties": {
+        "discovery": { "$ref": "#/$defs/phaseResult" },
+        "extraction": { "$ref": "#/$defs/phaseResult" },
+        "interview": { "$ref": "#/$defs/phaseResult" },
+        "synthesis": { "$ref": "#/$defs/phaseResult" },
+        "gate": { "$ref": "#/$defs/phaseResult" },
+        "handoff": { "$ref": "#/$defs/phaseResult" }
+      }
+    },
+    "rubric_scores": {
+      "type": "object",
+      "required": [
+        "evidence_fidelity",
+        "uncertainty_handling",
+        "profile_correctness",
+        "standards_actionability",
+        "risk_transparency"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "evidence_fidelity": { "$ref": "#/$defs/score" },
+        "uncertainty_handling": { "$ref": "#/$defs/score" },
+        "profile_correctness": { "$ref": "#/$defs/score" },
+        "standards_actionability": { "$ref": "#/$defs/score" },
+        "risk_transparency": { "$ref": "#/$defs/score" }
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "phase", "message", "recommended_action"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "severity": { "enum": ["warn", "fail"] },
+          "phase": { "enum": ["discovery", "extraction", "interview", "synthesis", "gate", "handoff"] },
+          "slot": { "type": "string" },
+          "message": { "type": "string", "minLength": 1 },
+          "recommended_action": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "reasoning_summary": { "type": "string" }
+  },
+  "$defs": {
+    "score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "phaseResult": {
+      "type": "object",
+      "required": ["verdict", "score"],
+      "additionalProperties": false,
+      "properties": {
+        "verdict": { "enum": ["pass", "warn", "fail"] },
+        "score": { "$ref": "#/$defs/score" }
+      }
+    }
+  }
+}

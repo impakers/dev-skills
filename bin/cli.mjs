@@ -19,7 +19,7 @@
  */
 
 import { mkdirSync, rmSync, cpSync, symlinkSync, existsSync, lstatSync, readdirSync, statSync } from 'node:fs';
-import { dirname, join, resolve, basename } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
 import process from 'node:process';
@@ -41,11 +41,18 @@ const isProject = flags.has('--project');
 const useSymlink = flags.has('--symlink');
 const isForce = flags.has('--force');
 
-const log = (...args) => { if (!isSilent) console.log(...args); };
+const log = (...args) => {
+  if (!isSilent) {
+    console.log(...args);
+  }
+};
 const err = (...args) => console.error(...args);
 
 function listAvailableSkills() {
-  if (!existsSync(SKILLS_DIR)) return [];
+  if (!existsSync(SKILLS_DIR)) {
+    return [];
+  }
+
   return readdirSync(SKILLS_DIR)
     .filter((name) => {
       try { return statSync(join(SKILLS_DIR, name)).isDirectory(); } catch { return false; }
@@ -55,19 +62,37 @@ function listAvailableSkills() {
 
 function resolveSkill(name) {
   const available = listAvailableSkills();
+
   if (!name) {
-    if (available.length === 1) return available[0];
+    if (available.length === 1) {
+      return available[0];
+    }
+
     err(`❌ 스킬 이름을 지정하세요. 사용 가능:`);
-    for (const s of available) err(`   - ${s}`);
+    for (const s of available) {
+      err(`   - ${s}`);
+    }
+
     process.exit(2);
   }
-  if (available.includes(name)) return name;
+
+  if (available.includes(name)) {
+    return name;
+  }
+
   // 접두어 매칭: "components-rules" → "impakers-components-rules"
   const match = available.find((s) => s === `impakers-${name}` || s.endsWith(`-${name}`));
-  if (match) return match;
+
+  if (match) {
+    return match;
+  }
+
   err(`❌ 스킬을 찾을 수 없습니다: ${name}`);
   err(`   사용 가능:`);
-  for (const s of available) err(`   - ${s}`);
+  for (const s of available) {
+    err(`   - ${s}`);
+  }
+
   process.exit(2);
 }
 
@@ -78,7 +103,12 @@ function targetDirFor(skillName) {
 }
 
 function existsAsDirOrLink(p) {
-  try { lstatSync(p); return true; } catch { return false; }
+  try {
+    lstatSync(p);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function installSkill(skillName) {
@@ -126,16 +156,29 @@ function uninstallSkill(skillName) {
 function listSkills() {
   const available = listAvailableSkills();
   console.log('[Available in package]');
-  for (const s of available) console.log(`  - ${s}`);
+  for (const s of available) {
+    console.log(`  - ${s}`);
+  }
+
   console.log('');
   const userDir = join(homedir(), '.claude', 'skills');
   const projectDir = join(process.cwd(), '.claude', 'skills');
+
   for (const [label, dir] of [['user', userDir], ['project', projectDir]]) {
-    if (!existsSync(dir)) continue;
+    if (!existsSync(dir)) {
+      continue;
+    }
+
     const entries = readdirSync(dir).filter((d) => existsSync(join(dir, d, 'SKILL.md')));
-    if (entries.length === 0) continue;
+
+    if (entries.length === 0) {
+      continue;
+    }
+
     console.log(`[Installed · ${label}] ${dir}`);
-    for (const e of entries) console.log(`  - ${e}`);
+    for (const e of entries) {
+      console.log(`  - ${e}`);
+    }
   }
 }
 
