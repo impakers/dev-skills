@@ -1,6 +1,6 @@
 ---
 name: impakers-components-rules
-description: "임패커스 UI 컴포넌트 개발 규칙 (shadcn/ui + Tailwind 기반). Claude가 .tsx/.jsx 편집, Dialog/Modal/AlertDialog/Sheet/Drawer/Popover 생성, Form(react-hook-form+zod) 구현, Table(TanStack/shadcn) 작성, Button/Select/Combobox/DropdownMenu/Badge/Skeleton/Tooltip 사용, Sonner toast 처리, 서버 액션 후 쿼리 invalidate 등을 수행할 때 자동 발동. 트리거 키워드 — shadcn, 모달, 다이얼로그, dialog, modal, sheet, drawer, popover, form, useForm, zodResolver, DataTable, useQuery, invalidateQueries, revalidatePath, toast, sonner, 컴포넌트 규칙, UI 규칙, COMPONENTS_RULES, 디자인 규칙. Use when editing React/Next.js UI code in any impakers frontend project (trusflow, place-real, lomelo-admin, dexter-krema, traction-13, etc.)."
+description: "임패커스 UI 컴포넌트 개발 규칙 (shadcn/ui + Tailwind 기반). Claude가 .tsx/.jsx 편집, Dialog/Modal/AlertDialog/Sheet/Drawer/Popover 생성, Form(react-hook-form+zod) 구현, Table(TanStack/shadcn) 작성, Button/Select/Combobox/DropdownMenu/Badge/Skeleton/Tooltip 사용, Sonner toast 처리, 서버 액션 후 쿼리 invalidate 등을 수행할 때 자동 발동. 트리거 키워드 — shadcn, 모달, 다이얼로그, dialog, modal, sheet, drawer, popover, form, useForm, zodResolver, DataTable, useQuery, invalidateQueries, revalidatePath, toast, sonner, 컴포넌트 규칙, UI 규칙, COMPONENTS_RULES, 디자인 규칙, 피드백 위젯, 파일 매핑, no-direct-shadcn-in-pages, ui-forward-props, @impakers/debug/eslint, forward-props, page.tsx 복합 UI. Use when editing React/Next.js UI code in any impakers frontend project (trusflow, place-real, lomelo-admin, dexter-krema, traction-13, etc.)."
 version: 1.0.0
 author: IMPAKERS
 license: internal
@@ -405,11 +405,70 @@ license: internal
 
 ---
 
+## 13. 피드백 위젯 파일 매핑 보호 (`@impakers/debug`)
+
+### 왜 필요한가
+
+피드백 위젯은 클릭한 DOM에서 조상 방향으로 올라가며 두 속성을 읽는다.
+
+| 속성 | 의미 |
+|---|---|
+| `data-imp-o` | **호출부** — 그 컴포넌트를 _사용한_ 파일 (`app/orders/page.tsx:89:5`) |
+| `data-imp` | **정의부** — 이 DOM 태그를 _작성한_ 파일 (`components/ui/dialog.tsx:32:3`) |
+
+임지안(AI 디버깅 에이전트)이 열어야 할 파일은 **호출부**다. 정의부는 여러 화면이 공유하는 공용 컴포넌트라, 거기를 고치면 문의 한 건 때문에 다른 화면까지 바뀐다. 호출부 값이 DOM까지 도달하지 못하는 경우가 두 가지 있어, 아래 두 규칙이 각각을 막는다.
+
+ESLint 프리셋 `@impakers/debug/eslint` (v1.9.0, `@impakers/debug` 패키지에 포함)가 자동으로 검사한다.
+
+```js
+// eslint.config.mjs
+import impakers from '@impakers/debug/eslint'
+export default [...next, ...impakers.configs.recommended]  // 전부 warn
+```
+
+### 13.1 복합 공용 UI는 `page.tsx`에서 직접 쓰지 않는다 (`no-direct-shadcn-in-pages`)
+
+- **WHEN** `app/**/page.tsx`에서 복합 공용 UI(Dialog/Sheet/Popover/Select/Drawer/Tabs 등)를 직접 import하는 경우
+- **THEN** `components/{domain}/` 아래 전용 컴포넌트로 감싸고, page는 조합만 한다.
+
+```tsx
+// ✗ Dialog가 portal로 렌더돼 DOM 조상 탐색이 page.tsx까지 닿지 않는다
+import { Dialog, DialogContent } from '@/components/ui/dialog'
+
+// ✓ 전용 컴포넌트로 분리 — 위젯이 실제 화면 파일(page.tsx)을 가리킨다
+import { OrderCancelDialog } from '@/components/order/order-cancel-dialog'
+```
+
+**Button / Input / Badge / Label 같은 단순 프리미티브는 막지 않는다.** 빌드 타임 호출부 주입이 이미 `page.tsx:360:23`까지 확정해주므로 쪼갤 이유가 없다. 모든 `<Button>`을 래퍼로 쪼개지 말 것.
+
+기본 차단 목록(19개): `accordion, alert-dialog, calendar, carousel, command, context-menu, dialog, drawer, dropdown-menu, hover-card, menubar, navigation-menu, pagination, popover, scroll-area, select, sheet, table, tabs`.
+
+### 13.2 공용 UI 래퍼는 `{...props}`를 전개한다 (`ui-forward-props`)
+
+- **WHEN** `components/ui/**` / `shared/ui/**`에 export된 컴포넌트가 `{...props}`를 전개하지 않는 경우
+- **THEN** 루트 엘리먼트에 `{...props}`를 추가한다.
+
+```tsx
+// ✗ 주입된 data-imp-o가 이 컴포넌트에서 증발한다 — 위젯은 정의부만 잡는다
+export function DateRangePicker({ value, onChange }) {
+  return <div onClick={onChange}>{value}</div>
+}
+
+// ✓ props를 흘려보내야 실제 DOM까지 도달한다
+export function DateRangePicker({ value, onChange, ...props }) {
+  return <div onClick={onChange} {...props}>{value}</div>
+}
+```
+
+export하지 않은 내부 헬퍼, `.example` / `.stories` / `.test` 파일은 검사하지 않는다.
+
+---
+
 ## 규칙 적용 우선순위
 
 1. `§0. 핵심 원칙` (Depth 최소화, shadcn 기본) — 항상 최우선
 2. `§11. 접근성` — 기능 요구사항과 동급
-3. 컴포넌트별 규칙 (§1 ~ §10, §12)
+3. 컴포넌트별 규칙 (§1 ~ §10, §12, §13)
 4. 규칙 간 충돌 시 → Depth 최소화 & 접근성 기준으로 판단
 
 <!-- END:SYNCED-RULES -->
